@@ -10,34 +10,21 @@ ms_pass = Eventapi_connection.ms_pass
 ms_db   = Eventapi_connection.ms_db
 
 domainid=962
-# startid=1
-# endid=1000000
+startid=1
+endid=1000000
 Status=0
-inputtable='ticket_master_calendar'
-outputtable = 'input'
-
-script, Status ,startid, endid, inputtable, outputtable, Offline, proxyId, DB =sys.argv
+outputtable = 'input_chk'
 
 db =pymssql.connect(host=ms_host, user=ms_user, password=ms_pass, database=ms_db)
 cursor = db.cursor()
 print ("DB_Connected")
 
-# selectq="Select domainid,url from" +' '+inputtable+' '+ "with (nolock) where domainid= '%s' and id  between '%s' and '%s' and Status = '%s' order by id" % (domainid,startid, endid, Status)
-# cursor.execute(selectq)
-# resultset =cursor.fetchall()
-# print(resultset)
-#Date format is (YYYY, MM, DD)
-# start_date = date(2022,2, 18)
-selectq="Select startdate,enddate from ticket_master_calendar with (nolock)"
-cursor.execute(selectq)
-result =cursor.fetchall()
-for dates in result:
-    start_date=dates[0]
-    end_date=dates[1]
+start_date = datetime.date.today()
+end_date = date.today() + timedelta(days = 365)
 
 def insert(url,Domainid,status):
     SQLUpdate = "INSERT Into "+(outputtable)+"(url,domainid,Status) values(N'%s',N'%s',N'%s')" %(url,domainid,Status)
-#     print("INSERT Into "+(outputtable)+"(url,domainid,Status) values(N'%s',N'%s',N'%s')" %(url,domainid,Status))
+    #print("INSERT Into "+(outputtable)+"(url,domainid,Status) values(N'%s',N'%s',N'%s')" %(url,domainid,Status))
     cursor.execute(SQLUpdate)
     db.commit()
     print("Inserted")
@@ -51,8 +38,7 @@ print("End Date :",end_date)
 for i in range(delta.days + 1):
     day = start_date + timedelta(days=i)
     date_list.append(str(day))
-    #print(day)
-
+#     print(day)
 for day in date_list:
     for x in range(1,50):
         part1_url="https://www.ticketmaster.com/api/next/graphql?operationName=CategorySearch&variables={%22localStartEndDateTime%22:%22"+str(day)+"T00:00:00,"+str(day)+"T15:59:59"
