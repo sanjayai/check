@@ -8,10 +8,7 @@ ms_host = Eventapi_connection.ms_host
 ms_user = Eventapi_connection.ms_user
 ms_pass = Eventapi_connection.ms_pass
 ms_db   = Eventapi_connection.ms_db
-# ms_host = "35.84.72.196:1433"
-# ms_user = "eddi"
-# ms_pass  = "9exmmtJ44"
-# ms_db     = "eddi"
+
 domainid=962
 # startid=1
 # endid=1000000
@@ -20,7 +17,6 @@ inputtable='ticket_master_calendar'
 outputtable = 'input'
 
 script, Status ,startid, endid, inputtable, outputtable, Offline, proxyId, DB =sys.argv
-# script, Status ,startid, endid, inputtable, outputtable, Offline, proxyId, DB =sys.argv
 
 db =pymssql.connect(host=ms_host, user=ms_user, password=ms_pass, database=ms_db)
 cursor = db.cursor()
