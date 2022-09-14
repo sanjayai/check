@@ -8,10 +8,11 @@ from unidecode import unidecode
 import Eventapi_connection,sys
 
 
-Status=0
+Status=1
 inputtable = 'navigateinput'
 outputtable='input_chk'
 domainid = 108
+proxyId=1
 
 startid,endid=1,1000000000
 #script, Status ,startid, endid, inputtable, outputtable, Offline, proxyId, DB =sys.argv
@@ -89,4 +90,6 @@ try:
 except Exception as e:
     print(e)
 
+cursor.execute("update pyscripts_1 set runstatus=1 where domainid=108 and processid =1")
+db.commit()
             
